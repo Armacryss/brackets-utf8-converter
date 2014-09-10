@@ -1,7 +1,6 @@
 /*jslint vars: true, plusplus: true, devel: true, nomen: true, regexp: true, indent: 4, maxerr: 50 */
 /*global define, $, brackets */
 
-/** Simple extension that adds a "File > Hello World" menu item. Inserts "Hello, world!" at cursor pos. */
 define(function (require, exports, module) {
     'use strict';
     
@@ -16,7 +15,7 @@ define(function (require, exports, module) {
         PanelManager = brackets.getModule('view/PanelManager'),
         Dialogs = brackets.getModule("widgets/Dialogs");
         
-        // Mustache templates
+    // Mustache templates
     var azEncPanelTemplate = require('text!html/panel.html'),
         azEncRowTemplate = require('text!html/rows.html');
     
