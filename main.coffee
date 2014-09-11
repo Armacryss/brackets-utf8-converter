@@ -1,29 +1,21 @@
 define (require, exports, module) ->
     'use strict'
     
-    ## Project name
-    extensionName = 'Brackets Extension - UTF8 Converter'
+    ## Brackets Modules
+    AppInit = brackets.getModule "utils/AppInit"
+    FileSystem = brackets.getModule "filesystem/FileSystem"
     
-    ## Modules
-    AppInit = brackets.getModule 'utils/AppInit'
-    Menus = brackets.getModule 'command/Menus'
-    CommandManager = brackets.getModule 'command/CommandManager'
-    ProjectManager = brackets.getModule 'project/ProjectManager'
-    FileSystem = brackets.getModule 'filesystem/FileSystem'
-    DocumentManager = brackets.getModule 'document/DocumentManager'
-    ExtensionUtils = brackets.getModule 'utils/ExtensionUtils'
-    NodeConnection = brackets.getModule 'utils/NodeConnection'
-    PanelManager = brackets.getModule 'view/PanelManager'
-    Dialogs = brackets.getModule "widgets/Dialogs"
-    
-    ## Templates
-    azEncPanelTemplate = require 'text!html/panel.html'
-    azEncRowTemplate = require 'text!html/rows.html'
-    
-    ## Extension variables
-    files = []
-    $azPanel
-    nodeConnection
-    azBkPanel
-    
-    
+    ## UTF Converter modules
+    utfCore = require 'src/core'
+    utfUI = require 'src/ui'
+
+    ## Initialize UI
+    do utfUI.init
+        
+    ## Init application
+    AppInit.appReady () ->
+        do utfCore.init
+        utfUi.initStyleSheet 'styles/main.css'
+
+    ## Exports handler
+    exports.handleDetectEncoding = utfCore.handleDetectEncoding;
