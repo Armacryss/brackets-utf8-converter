@@ -3,6 +3,7 @@ define (require, exports, module) ->
         
     ## Brackets Module
     ProjectManager = brackets.getModule 'project/ProjectManager'
+    ExtensionUtils = brackets.getModule 'utils/ExtensionUtils'
     NodeConnection = brackets.getModule 'utils/NodeConnection'
     Dialogs = brackets.getModule "widgets/Dialogs"
     Menus = brackets.getModule 'command/Menus'
@@ -25,14 +26,15 @@ define (require, exports, module) ->
     
     
     ## Init
-    init = () =>
+    init = (mainModule) =>
         @nodeConnection = new NodeConnection
         connect = () =>
             connectionPromise = @nodeConnection.connect(true)
             connectionPromise.fail -> console.error '[UTF8-Converter] failed to establish a connection with Node'
             connectionPromise
         loadUtfDomain = () =>
-            path = ProjectManager.getProjectRoot()._path + 'node/brutfDomain'
+            ## We need the main module path
+            path = ExtensionUtils.getModulePath(mainModule, 'node/brutfDomain')
             loadPromise = @nodeConnection.loadDomains [path], true
             loadPromise.fail () -> console.log '[UTF8-Converter] failed to load domain'
             loadPromise.done () -> console.log '[UTF8-Converter] successfully loaded'

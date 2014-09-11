@@ -14,7 +14,7 @@ define (require, exports, module) ->
         
     ## Init application
     AppInit.appReady () ->
-        do utfCore.init
+        utfCore.init module
         utfUI.initStylesheet 'styles/main.css'
         return
 

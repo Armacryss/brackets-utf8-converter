@@ -27,10 +27,11 @@ define (require, exports, module) ->
         panelHtml = Mustache.render templatePanel, ''
         @bracketsBottomPanel = PanelManager.createBottomPanel 'brutf.encoding.listfiles', $(panelHtml), 200
         @$utfBottomPanel = $ '#brackets-utf8-converter-panel'
-        @$utfBottomPanel.on 'click', '.close', ->
-            do bracketsBottomPanel.hide
+        @$utfBottomPanel.on 'click', '.close', =>
+            do @bracketsBottomPanel.hide
+            return
         .on 'click', '.btnConvert', core.convertFile
-        $(ProjectManager).on "beforeProjectClose", -> do bracketsBottomPanel.hide
+        $(ProjectManager).on "beforeProjectClose", => do @bracketsBottomPanel.hide
         return
     
     ## CSS to use

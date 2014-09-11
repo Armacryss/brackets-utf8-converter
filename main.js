@@ -8,7 +8,7 @@ define(function(require, exports, module) {
   utfUI = require('src/ui');
   utfUI.init();
   AppInit.appReady(function() {
-    utfCore.init();
+    utfCore.init(module);
     utfUI.initStylesheet('styles/main.css');
   });
   return exports.handleDetectEncoding = utfCore.handleDetectEncoding;

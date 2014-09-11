@@ -24,12 +24,16 @@ define(function(require, exports, module) {
     panelHtml = Mustache.render(templatePanel, '');
     this.bracketsBottomPanel = PanelManager.createBottomPanel('brutf.encoding.listfiles', $(panelHtml), 200);
     this.$utfBottomPanel = $('#brackets-utf8-converter-panel');
-    this.$utfBottomPanel.on('click', '.close', function() {
-      return bracketsBottomPanel.hide();
-    }).on('click', '.btnConvert', core.convertFile);
-    $(ProjectManager).on("beforeProjectClose", function() {
-      return bracketsBottomPanel.hide();
-    });
+    this.$utfBottomPanel.on('click', '.close', (function(_this) {
+      return function() {
+        _this.bracketsBottomPanel.hide();
+      };
+    })(this)).on('click', '.btnConvert', core.convertFile);
+    $(ProjectManager).on("beforeProjectClose", (function(_this) {
+      return function() {
+        return _this.bracketsBottomPanel.hide();
+      };
+    })(this));
   };
   initStylesheet = function(cssname) {
     return ExtensionUtils.loadStyleSheet(module, "../" + cssname);
