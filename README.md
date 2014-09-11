@@ -11,12 +11,12 @@ It'll be deprecated once the Brackets' team add support to other file format tha
 
 HOW-TO
 ------------------
-To install this extension (still under development, you'll have to bear with me), just copy the whole project folder to Brackets extension folder. 
-You can access this folder from Brackets (Help > Show Extensions Folder).
+To install this extension (still under development, you'll have to bear with me), just copy the whole project folder to Brackets extension folder.  
+You can access this folder from Brackets (Help > Show Extensions Folder).  
 Next, you'll have to Restart Node from Brackets (Debug > Restart Node) and reload Brackets with extensions (Debug > Reload With Extensions ... or F5).
 
-Once installed, you can right-click on a folder and click "Detect Encoding".
-It'll navigate through the files (and subfolders - see "Missing features") and display a bottom panel with a list of files and a button to "Convert" each file to UTF8.
+Once installed, you can right-click on a folder and click "Detect Encoding".  
+It'll navigate through the files (and subfolders - see "Missing features") and display a bottom panel with a list of files and a button to "Convert" each file to UTF8.  
 Don't be afraid of losing any of your files, this extension creates a copy of the converted file with a ".utf8" tag added to it (before the extension name, of course).
 
 Used packages
@@ -25,6 +25,7 @@ Since this project uses some NodeJS packages, let's introduce them !
 - The core of this extension is [iconv-lite](https://github.com/ashtuchkin/iconv-lite) which handles the conversion.
 - [jschardet](https://github.com/aadsm/jschardet) is also used to provide some information about the encoding.
 - [node-chardet](https://github.com/runk/node-chardet) is also there but unused.  
+
 And... that's it !
 
 Missing features
