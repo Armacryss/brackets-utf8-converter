@@ -1,11 +1,13 @@
 do () ->
     'use strict'
     
+    ##Node modules
     fs = require 'fs'
     iconv = require 'iconv-lite'
     chardet = require 'node-chardet'
     jschardet = require 'jschardet'
     
+    ## Method to get files encoding. Dig allows to dig through sub-directories.
     cmdGetFilesEncoding = (dirPath, dig) ->
         dig = false if not dig?
         lsFiles = fs.readdirSync(dirPath)
@@ -21,15 +23,14 @@ do () ->
                     file.confidence *= 100
                     listFiles.push file
                 else if dig
-                    if filePath isnt /\/$/
-                        filePath += '/'
+                    filePath += '/' if filePath isnt /\/$/
                     lsDiggedFiles = cmdGetFilesEncoding filePath, dig
                     for diggedFile in lsDiggedFiles.files
                         listFiles.push diggedFile
                 
         return files: listFiles
     
-    
+    ## Convert file to UTF8.
     cmdConvertFileEncoding = (filePath)  ->
         file = fs.readFileSync filePath
         str = iconv.decode file, jschardet.detect(file).encoding
@@ -43,7 +44,7 @@ do () ->
         
         return newFile;
     
-    
+    ## Init - automatically called
     init = (DomainManager) ->
         domainName = 'bracketsUtfConverter'
         if not DomainManager.hasDomain domainName
