@@ -5,7 +5,7 @@ Brackets extension for encoding files to UTF8 format
 
 (Short) Introduction
 -----------------
-First and foremost, that project is a fork of [Az-Encode](https://github.com/Azakur4/Az-Encode) written by [Jimmy Brian Anamaria Torres](https://github.com/Azakur4), so, many thanks to him !  
+First and foremost, this project is a fork of [Az-Encode](https://github.com/Azakur4/Az-Encode) written by [Jimmy Brian Anamaria Torres](https://github.com/Azakur4), so, many thanks to him !  
 At first, I just wanted to update one of the node package, but I need more features, so I decided to extend the original project in order to add what I need, and maybe what others need.  
 It'll be deprecated once the Brackets' team add support to other file format than UTF8 but... well, who cares ? and since [Brackets](https://github.com/adobe/brackets) is a great open-source text editor, it would be too bad to not use it because it can't open (*yet*) files that aren't encoded using UTF8.
 
