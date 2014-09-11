@@ -18,9 +18,9 @@ define (require, exports, module) ->
     @$utfBottomPanel
     
     ## Shortcut to add rows (not exposed)
-    insertRows = (files) ->
-        rowsHtml = Mustache.render brutfRowTemplate, {'fileList': files}
-        @$utfBottomPanel.find('.row-container').empty().append rowsHtml
+    insertRows = (files) =>
+        rowsHtml = Mustache.render templateRow, {'fileList': files}
+        @$utfBottomPanel.find('.rows-container').empty().append rowsHtml
         
     ## initialize the default element for the UI
     init = () ->
@@ -28,17 +28,18 @@ define (require, exports, module) ->
         @bracketsBottomPanel = PanelManager.createBottomPanel 'brutf.encoding.listfiles', $(panelHtml), 200
         @$utfBottomPanel = $ '#brackets-utf8-converter-panel'
         @$utfBottomPanel.on 'click', '.close', ->
-            bracketsBottomPanel.hide
+            do bracketsBottomPanel.hide
         .on 'click', '.btnConvert', core.convertFile
-        $ ProjectManager .on "beforeProjectClose", -> bracketsBottomPanel.hide
+        $(ProjectManager).on "beforeProjectClose", -> do bracketsBottomPanel.hide
+        return
     
     ## CSS to use
     initStylesheet = (cssname) ->
          ExtensionUtils.loadStyleSheet module, "../" + cssname
     
     ## Exposed method to display the panel
-    showPanel = (files) ->
-        @bottomPanel.show
+    showPanel = (files) =>
+        do @bracketsBottomPanel.show
         insertRows files
     
     ## Exports

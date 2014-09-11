@@ -3,8 +3,7 @@ define (require, exports, module) ->
         
     ## Brackets Module
     ProjectManager = brackets.getModule 'project/ProjectManager'
-    nodeConnection = brackets.getModule 'utils/NodeConnection'
-    ExtensionUtils = brackets.getModule 'utils/ExtensionUtils'
+    NodeConnection = brackets.getModule 'utils/NodeConnection'
     Dialogs = brackets.getModule "widgets/Dialogs"
     Menus = brackets.getModule 'command/Menus'
     CommandManager = brackets.getModule 'command/CommandManager'
@@ -20,20 +19,20 @@ define (require, exports, module) ->
     chain = () ->
         functions = Array.prototype.slice.call(arguments, 0);
         if functions.length > 0
-            firstFunction = functions.shift
-            firstPromise = firstFunction.call
+            firstFunction = do functions.shift
+            firstPromise = do firstFunction.call
             firstPromise.done () -> chain.apply null, functions
     
     
     ## Init
-    init = () ->
+    init = () =>
         @nodeConnection = new NodeConnection
-        connect () =>
+        connect = () =>
             connectionPromise = @nodeConnection.connect(true)
             connectionPromise.fail -> console.error '[UTF8-Converter] failed to establish a connection with Node'
             connectionPromise
-        loadUtfDomain () =>
-            path = ExtensionUtils.getModulePath module, 'node/brutfDomain'
+        loadUtfDomain = () =>
+            path = ProjectManager.getProjectRoot()._path + 'node/brutfDomain'
             loadPromise = @nodeConnection.loadDomains [path], true
             loadPromise.fail () -> console.log '[UTF8-Converter] failed to load domain'
             loadPromise.done () -> console.log '[UTF8-Converter] successfully loaded'
@@ -45,7 +44,7 @@ define (require, exports, module) ->
         Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).addMenuItem MY_COMMAND_ID
     
     ## Convert process
-    convertFile = () ->
+    convertFile = () =>
         @currentItem = $(this)
         convertPromise = @nodeConnection.domains.utfconverter.convertFileEncoding @currentItem.data('file')
         
@@ -57,8 +56,8 @@ define (require, exports, module) ->
             @currentItem.html('Converted')
        
     ## Detection process
-    detectEncoding = () ->
-        encodingPromise = @nodeConnection.domains.azenc.getFilesEncoding(ProjectManager.getSelectedItem()._path.toString())
+    detectEncoding = () =>
+        encodingPromise = @nodeConnection.domains.bracketsUtfConverter.getFilesEncoding(ProjectManager.getSelectedItem()._path.toString(), true)
         
         encodingPromise.fail (err) -> console.error '[UTF8-Converter] failed to detect encoding of files', err
         encodingPromise.done (data) -> utfUI.showPanel data.files
@@ -67,7 +66,7 @@ define (require, exports, module) ->
     ## Main handler
     handleDetectEncoding = () -> 
         if ProjectManager.getSelectedItem()._isDirectory
-            chain brutfCore.detectEncoding 
+            chain detectEncoding 
         else
             Dialogs.showModalDialog '', 'UTF8-Converter', 'You must select a <b>directory</b> to detect encodings.<br />This extension doesn\'t work with a single files.'
         null

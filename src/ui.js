@@ -10,32 +10,36 @@ define(function(require, exports, module) {
   core = require('./core');
   this.bracketsBottomPanel;
   this.$utfBottomPanel;
-  insertRows = function(files) {
-    var rowsHtml;
-    rowsHtml = Mustache.render(brutfRowTemplate, {
-      'fileList': files
-    });
-    return this.$utfBottomPanel.find('.row-container').empty().append(rowsHtml);
-  };
+  insertRows = (function(_this) {
+    return function(files) {
+      var rowsHtml;
+      rowsHtml = Mustache.render(templateRow, {
+        'fileList': files
+      });
+      return _this.$utfBottomPanel.find('.rows-container').empty().append(rowsHtml);
+    };
+  })(this);
   init = function() {
     var panelHtml;
     panelHtml = Mustache.render(templatePanel, '');
     this.bracketsBottomPanel = PanelManager.createBottomPanel('brutf.encoding.listfiles', $(panelHtml), 200);
     this.$utfBottomPanel = $('#brackets-utf8-converter-panel');
     this.$utfBottomPanel.on('click', '.close', function() {
-      return bracketsBottomPanel.hide;
+      return bracketsBottomPanel.hide();
     }).on('click', '.btnConvert', core.convertFile);
-    return $(ProjectManager.on("beforeProjectClose", function() {
-      return bracketsBottomPanel.hide;
-    }));
+    $(ProjectManager).on("beforeProjectClose", function() {
+      return bracketsBottomPanel.hide();
+    });
   };
   initStylesheet = function(cssname) {
     return ExtensionUtils.loadStyleSheet(module, "../" + cssname);
   };
-  showPanel = function(files) {
-    this.bottomPanel.show;
-    return insertRows(files);
-  };
+  showPanel = (function(_this) {
+    return function(files) {
+      _this.bracketsBottomPanel.show();
+      return insertRows(files);
+    };
+  })(this);
   exports.init = init;
   exports.initStylesheet = initStylesheet;
   exports.showPanel = showPanel;

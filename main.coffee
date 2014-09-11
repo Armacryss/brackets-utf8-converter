@@ -15,7 +15,8 @@ define (require, exports, module) ->
     ## Init application
     AppInit.appReady () ->
         do utfCore.init
-        utfUi.initStyleSheet 'styles/main.css'
+        utfUI.initStylesheet 'styles/main.css'
+        return
 
     ## Exports handler
     exports.handleDetectEncoding = utfCore.handleDetectEncoding;

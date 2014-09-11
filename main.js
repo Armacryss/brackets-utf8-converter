@@ -6,10 +6,10 @@ define(function(require, exports, module) {
   FileSystem = brackets.getModule("filesystem/FileSystem");
   utfCore = require('src/core');
   utfUI = require('src/ui');
+  utfUI.init();
   AppInit.appReady(function() {
-    utfUI.init();
     utfCore.init();
-    return utfUi.initStyleSheet('styles/main.css');
+    utfUI.initStylesheet('styles/main.css');
   });
   return exports.handleDetectEncoding = utfCore.handleDetectEncoding;
 });
