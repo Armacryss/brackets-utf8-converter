@@ -24,7 +24,7 @@ Used packages
 Since this project uses some NodeJS packages, let's introduce them !
 - The core of this extension is [iconv-lite](https://github.com/ashtuchkin/iconv-lite) which handles the conversion.
 - [jschardet](https://github.com/aadsm/jschardet) is also used to provide some information about the encoding.
-- [node-chardet](https://github.com/runk/node-chardet) is also there but unused.
+- [node-chardet](https://github.com/runk/node-chardet) is also there but unused.  
 And... that's it !
 
 Missing features
