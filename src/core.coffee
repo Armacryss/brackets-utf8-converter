@@ -9,8 +9,11 @@ define (require, exports, module) ->
     Menus = brackets.getModule 'command/Menus'
     CommandManager = brackets.getModule 'command/CommandManager'
     
+    
     ## UI Module
     utfUI   =   require './ui' 
+    preferencesDialog = require './preferencesdialog'
+    Preferences = require './preferences'
     
     ## Variables
     @currentItem
@@ -41,9 +44,22 @@ define (require, exports, module) ->
             loadPromise
         chain connect, loadUtfDomain
         
-        MY_COMMAND_ID = 'brutf.detectEncoding'
-        CommandManager.register 'Detect Encoding', MY_COMMAND_ID, @handleDetectEncoding
-        Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU).addMenuItem MY_COMMAND_ID
+        ## Waiting for sub menu implementation.
+        MAIN_TOOL_COMMAND_ID = 'brutf_main_menu'
+        DETECT_ENCODING_COMMAND_ID = 'brutf.detectEncoding'
+        PREFERENCES_ENCODING_COMMAND_ID = 'brutf.preferences'
+        
+        ## Add commands
+        CommandManager.register 'Detect Encoding', DETECT_ENCODING_COMMAND_ID, @handleDetectEncoding
+        CommandManager.register 'Encoding Preferences', PREFERENCES_ENCODING_COMMAND_ID, preferencesDialog.show
+        
+        ## Add menu items
+        menu = Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU)
+        do menu.addMenuDivider
+        menu.addMenuItem DETECT_ENCODING_COMMAND_ID
+        menu.addMenuItem PREFERENCES_ENCODING_COMMAND_ID
+        
+        return
     
     ## Convert process
     convertFile = () =>
@@ -59,7 +75,7 @@ define (require, exports, module) ->
        
     ## Detection process
     detectEncoding = () =>
-        encodingPromise = @nodeConnection.domains.bracketsUtfConverter.getFilesEncoding(ProjectManager.getSelectedItem()._path.toString(), true)
+        encodingPromise = @nodeConnection.domains.bracketsUtfConverter.getFilesEncoding(ProjectManager.getSelectedItem()._path.toString(), Preferences.get('allowDigging'))
         
         encodingPromise.fail (err) -> console.error '[UTF8-Converter] failed to detect encoding of files', err
         encodingPromise.done (data) -> utfUI.showPanel data.files

@@ -27,11 +27,11 @@ define(function(require, exports, module) {
   utf_prefs.getAll = function() {
     var obj;
     obj = {};
-    _.each(defaultPreferences((function(_this) {
+    _.each(defaultPreferences, (function(_this) {
       return function(defintion, key) {
         return obj[key] = _this.get(key);
       };
-    })(this)));
+    })(this));
     return obj;
   };
   utf_prefs.getDefaults = function() {
@@ -40,7 +40,12 @@ define(function(require, exports, module) {
     _.each(defaultPreferences, (function(_this) {
       return function(definition, key) {
         var defaultValue;
-        return defaultValue = definition.os[brackets.platform].value(definition.os && definition.os[brackets.platform] ? void 0 : defaultValue = definition.value);
+        if (definition.os && definition.os[brackets.platform]) {
+          defaultValue = definition.os[brackets.platform].value;
+        } else {
+          defaultValue = definition.value;
+        }
+        return obj[key] = defaultValue;
       };
     })(this));
     return obj;
@@ -48,8 +53,8 @@ define(function(require, exports, module) {
   utf_prefs.persist = (function(_this) {
     return function(key, value) {
       _this.set(key, value);
-      return _this.save();
+      _this.save();
     };
   })(this);
-  return module.exports = utf_prefs;
+  module.exports = utf_prefs;
 });

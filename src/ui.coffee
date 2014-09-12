@@ -6,12 +6,14 @@ define (require, exports, module) ->
     PanelManager = brackets.getModule 'view/PanelManager'
     ExtensionUtils = brackets.getModule 'utils/ExtensionUtils'
     
+    
     ## Mustache templates
     templatePanel = require 'text!templates/panel.html'
     templateRow = require 'text!templates/rows.html'
     
-    ## Core engine
+    ## Modules
     core = require './core'
+    PreferencesDialog = require './preferencesdialog'
     
     ## Variables
     @bracketsBottomPanel
@@ -31,6 +33,9 @@ define (require, exports, module) ->
             do @bracketsBottomPanel.hide
             return
         .on 'click', '.btnConvert', core.convertFile
+        .on 'click', '.preferences-settings', ->
+            do PreferencesDialog.show
+            
         $(ProjectManager).on "beforeProjectClose", => do @bracketsBottomPanel.hide
         return
     

@@ -28,7 +28,7 @@ do () ->
                     for diggedFile in lsDiggedFiles.files
                         listFiles.push diggedFile
                 
-        return files: listFiles
+        return {directory: dirPath, files: listFiles}
     
     ## Convert file to UTF8.
     cmdConvertFileEncoding = (filePath)  ->

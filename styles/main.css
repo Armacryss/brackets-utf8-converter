@@ -17,3 +17,46 @@ a.btnConvert:active {
     background-color: #3f5f38;
     color: #fff;
 }
+
+/*PANEL*/
+#brackets-utf8-converter-panel .resizable-content {
+    height: 175px;
+    overflow: auto;
+}
+
+#brackets-utf8-converter-panel table td {
+    line-height: 14px;
+    padding: 4px 10px;
+}
+
+#brackets-utf8-converter-panel table td a {
+    cursor: pointer;
+}
+
+#brackets-utf8-converter-panel table thead td {
+    font-weight: bold;
+    background-color: #404040;
+    padding: 0;
+    color: #fff;
+    padding: 4px 10px;
+}
+
+#brackets-utf8-converter-panel .toolbar {
+    display: block;
+}
+
+#brackets-utf8-converter-panel .toolbar .close {
+    font-weight: bold;
+    font-height: 20px;
+    color: #999;
+    margin-right: 5px;
+}
+
+#brackets-utf8-converter-panel .toolbar .preferences-settings {
+    margin-right: 50px;
+}
+
+#brackets-utf8-converter-panel .toolbar .close:hover {
+    text-decoration: none;
+    color: #000;
+}
