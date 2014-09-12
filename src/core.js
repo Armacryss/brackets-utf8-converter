@@ -55,14 +55,14 @@ define(function(require, exports, module) {
   convertFile = (function(_this) {
     return function() {
       var convertPromise;
-      _this.currentItem = $(_this);
-      convertPromise = _this.nodeConnection.domains.utfconverter.convertFileEncoding(_this.currentItem.data('file'));
-      convertPromise.fail(function() {
-        return console.log('[UTF8-Converter] failed to convert the file');
+      _this.currentItem = $(event.target);
+      convertPromise = _this.nodeConnection.domains.bracketsUtfConverter.convertFileEncoding(_this.currentItem.data('file'));
+      convertPromise.fail(function(err) {
+        return console.log('[UTF8-Converter] failed to convert the file : ' + err);
       });
       return convertPromise.done(function(newFilePath) {
         console.log('[UTF8-Converter] converted a file');
-        return this.currentItem.html('Converted');
+        return _this.currentItem.html('Converted');
       });
     };
   })(this);
@@ -85,7 +85,6 @@ define(function(require, exports, module) {
     } else {
       Dialogs.showModalDialog('', 'UTF8-Converter', 'You must select a <b>directory</b> to detect encodings.<br />This extension doesn\'t work with a single files.');
     }
-    return null;
   };
   exports.init = init;
   exports.convertFile = convertFile;

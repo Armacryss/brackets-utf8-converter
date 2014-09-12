@@ -47,13 +47,13 @@ define (require, exports, module) ->
     
     ## Convert process
     convertFile = () =>
-        @currentItem = $(this)
-        convertPromise = @nodeConnection.domains.utfconverter.convertFileEncoding @currentItem.data('file')
+        @currentItem = $(event.target)
+        convertPromise = @nodeConnection.domains.bracketsUtfConverter.convertFileEncoding @currentItem.data('file')
         
-        convertPromise.fail ->
-            console.log('[UTF8-Converter] failed to convert the file')
+        convertPromise.fail (err) ->
+            console.log '[UTF8-Converter] failed to convert the file : ' + err
             
-        convertPromise.done (newFilePath) ->
+        convertPromise.done (newFilePath) =>
             console.log '[UTF8-Converter] converted a file'
             @currentItem.html('Converted')
        
@@ -71,7 +71,7 @@ define (require, exports, module) ->
             chain detectEncoding 
         else
             Dialogs.showModalDialog '', 'UTF8-Converter', 'You must select a <b>directory</b> to detect encodings.<br />This extension doesn\'t work with a single files.'
-        null
+        return
     
     ## Exports
     exports.init = init
