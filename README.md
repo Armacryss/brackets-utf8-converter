@@ -34,7 +34,7 @@ Missing features
 - [x] Switch to coffeescript (warning : Brackets will work with Javascript only)
 - [x] Ability to dig through files
 - [x] Add preference UI (option to dig [or not] into sub-folders, convert on the fly, ...)
-- [ ] Change interface (ie : group files by folders, ...)
+- [ ] Change bottom panel interface (ie : group files by folders, ...)
 - [x] Ability to convert whole folders (create a copy of that folder with an extension to the name)
 - [ ] ~~Ability to detect encoding/convert a single file~~ _(Brackets' error message prevent the use of such functionality)_
 - [ ] BONUS : React to "UNSUPPORTED_ENCODING_ERR" to provide a way to suggest a conversion (I don't know if it's possible ... gotta check the API)
