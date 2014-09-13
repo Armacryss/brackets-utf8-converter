@@ -33,9 +33,9 @@ Missing features
 - [x] Split functions and modules to separate files
 - [x] Switch to coffeescript (warning : Brackets will work with Javascript only)
 - [x] Ability to dig through files
-- [ ] Add preference UI (option to dig [or not] into sub-folders, convert on the fly, ...)
+- [x] Add preference UI (option to dig [or not] into sub-folders, convert on the fly, ...)
 - [ ] Change interface (ie : group files by folders, ...)
-- [ ] Ability to convert whole folders (create a copy of that folder with an extension to the name)
+- [x] Ability to convert whole folders (create a copy of that folder with an extension to the name)
 - [ ] Ability to detect encoding/convert a single file
 - [ ] BONUS : React to "UNSUPPORTED_ENCODING_ERR" to provide a way to suggest a conversion (I don't know if it's possible ... gotta check the API)
 - [ ] BONUS : Work ASYNC 
