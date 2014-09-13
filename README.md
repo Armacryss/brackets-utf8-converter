@@ -39,3 +39,4 @@ Missing features
 - [ ] Ability to detect encoding/convert a single file
 - [ ] BONUS : React to "UNSUPPORTED_ENCODING_ERR" to provide a way to suggest a conversion (I don't know if it's possible ... gotta check the API)
 - [ ] BONUS : Work ASYNC 
+- [ ] Add more comments in coffeescripts !
