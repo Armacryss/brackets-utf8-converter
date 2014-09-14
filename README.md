@@ -44,7 +44,7 @@ Missing features
 - [ ] Change bottom panel interface (ie : group files by folders, ...)
 - [x] Ability to convert whole folders (create a copy of that folder with an extension to the name)
 - [ ] ~~Ability to detect encoding/convert a single file~~ _(Brackets' error message prevent the use of such functionality)_
-- [ ] Add more comments in coffeescripts !
+- [ ] Add more comments to coffeescripts !
 
 Other features that MAY be added (one day)
 ---------------------
