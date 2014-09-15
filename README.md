@@ -35,7 +35,7 @@ Since this project uses some NodeJS packages, let's introduce them !
 
 And... that's it !
 
-Missing features
+Features
 ---------------
 - [x] Split functions and modules to separate files
 - [x] Switch to coffeescript (warning : Brackets will work with Javascript only)
