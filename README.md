@@ -26,6 +26,11 @@ It'll convert a whole folder to UTF8 but creating a copy of it and converting ev
 - click "Encoding Settings"
 It'll give you a bit of control over the module, you can disable the ability to detect/convert subfolders, or remove the action "Convert to UTF8" if you don't want to do it by mistake.
 
+Ignored files
+-----------------------
+JSChardet may fails to detect some encoding.  
+In that case, this extension will (for the moment) ignore the file.  
+
 Used packages
 --------------------
 Since this project uses some NodeJS packages, let's introduce them !
@@ -45,6 +50,7 @@ Features
 - [x] Ability to convert whole folders (create a copy of that folder with an extension to the name)
 - [x] Ability to detect encoding/convert a single file _(Brackets' error message prevent the use of such functionality on unreadable files... still exists just in case)_
 - [ ] Add more comments to coffeescripts !
+- [ ] Handle files with no encoding detected (display them in a panel maybe...)
 
 Other features that MAY be added (one day)
 ---------------------
