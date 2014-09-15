@@ -1,4 +1,4 @@
-UTF8 Converter (under development !)
+UTF8 Converter
 =========
 
 Brackets extension for encoding files to UTF8 format
@@ -31,7 +31,7 @@ Used packages
 Since this project uses some NodeJS packages, let's introduce them !
 - The core of this extension is [iconv-lite](https://github.com/ashtuchkin/iconv-lite) which handles the conversion.
 - [jschardet](https://github.com/aadsm/jschardet) is also used to provide some information about the encoding.
-- [node-chardet](https://github.com/runk/node-chardet) is also there but unused.  
+- [path](https://github.com/joyent/node) from nodejs main package
 
 And... that's it !
 
@@ -43,7 +43,7 @@ Missing features
 - [x] Add preference UI (option to dig [or not] into sub-folders, convert on the fly, ...)
 - [ ] Change bottom panel interface (ie : group files by folders, ...)
 - [x] Ability to convert whole folders (create a copy of that folder with an extension to the name)
-- [ ] ~~Ability to detect encoding/convert a single file~~ _(Brackets' error message prevent the use of such functionality)_
+- [x] Ability to detect encoding/convert a single file _(Brackets' error message prevent the use of such functionality on unreadable files... still exists just in case)_
 - [ ] Add more comments to coffeescripts !
 
 Other features that MAY be added (one day)
