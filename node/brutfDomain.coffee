@@ -4,27 +4,44 @@ do () ->
     ##Node modules
     fs = require 'fs'
     iconv = require 'iconv-lite'
-    chardet = require 'node-chardet'
     jschardet = require 'jschardet'
+    path = require 'path'
     
-    ## Method to get files encoding. Dig allows to dig through sub-directories.
+    ##Get Encoding of a single file.
+    cmdGetFileEncoding = (filePath) ->
+        fileInfo = {}
+        if fs.existsSync filePath
+            fileInfo = jschardet.detect fs.readFileSync(filePath)
+            fileInfo.name = path.basename filePath
+            fileInfo.path = filePath
+            fileInfo.confidence *= 100
+            return fileInfo
+        
+        throw new Error 'Error while getting file info. Invalid file path : ' + filePath
+    
+    ## Get files encoding. Dig allows to dig through sub-directories.
     cmdGetFilesEncoding = (dirPath, dig) ->
         dig = false if not dig?
         lsFiles = fs.readdirSync(dirPath)
         listFiles = []
         
+        ##Loop through the list of detected files
         for filename in lsFiles
+            ## We ignore temp files (MAC & Linux)
             if filename? and filename isnt '.DS_Store' and filename isnt /~$/
+                ## Building the file path
                 filePath = dirPath + filename
+                ## if it's a file, we have to read it
                 if not do fs.lstatSync(filePath).isDirectory
-                    file = jschardet.detect fs.readFileSync(filePath)
-                    file.name = filename
-                    file.path = filePath
-                    file.confidence *= 100
+                    file = cmdGetFileEncoding filePath
                     listFiles.push file
+                ## otherwise, if we allow it from the preferences, we look into the subfolders
                 else if dig
+                    ## just to be sure, we had a slash in the end
                     filePath += '/' if filePath isnt /\/$/
+                    ## recursive call
                     lsDiggedFiles = cmdGetFilesEncoding filePath, dig
+                    ## Loop to add files (need to add lodash...)
                     for diggedFile in lsDiggedFiles.files
                         listFiles.push diggedFile
                 
@@ -36,12 +53,12 @@ do () ->
         str = iconv.decode file, jschardet.detect(file).encoding
         str_enc = iconv.encode str, 'utf8'
         
-        fileName = filePath.substring filePath.lastIndexOf('/') + 1, filePath.lastIndexOf('.')
-        fileExt = filePath.substring filePath.lastIndexOf('.')
+        fileExt = path.extname filePath
+        fileName = path.basename filePath, fileExt
             
         ## Build new file path
         if not fileDestination?
-            fileDir = filePath.substring 0, filePath.lastIndexOf('/') + 1
+            fileDir = path.dirname filePath
             newFile = fileDir + fileName + '.utf8' + fileExt
         else
             newFile = fileDestination + fileName + fileExt
@@ -61,10 +78,7 @@ do () ->
             if filename? and filename isnt '.DS_Store' and filename isnt /~$/
                 filePath = dirPath + filename
                 if not do fs.lstatSync(filePath).isDirectory
-                    file = jschardet.detect fs.readFileSync(filePath)
-                    file.name = filename
-                    file.path = filePath
-                    file.confidence *= 100
+                    file = cmdGetFileEncoding filePath
                     listFiles.push file
                 else if dig
                     filePath += '/' if filePath isnt /\/$/
@@ -84,7 +98,7 @@ do () ->
                 folderDestination = newDirectory
                 
                 ## We have to loop through subfolders in order to create the whole tree
-                tabSubFile = subFile.split '/' 
+                tabSubFile = path.dirname(subFile).split('/')
                 for subItem in tabSubFile
                     folderDestination += subItem + '/'
                     if not fs.existsSync folderDestination
@@ -101,8 +115,11 @@ do () ->
         if not DomainManager.hasDomain domainName
             DomainManager.registerDomain(domainName, {major: 0, minor: 1});
         
+        DomainManager.registerCommand domainName, 'getFileEncoding', cmdGetFileEncoding, false, 'Return encoding file info', []
+            
         DomainManager.registerCommand domainName, 'getFilesEncoding', cmdGetFilesEncoding, false, 'Return list of files with encoding', [
-            { name: 'path', type: 'string', description: 'File path' }
+            { name: 'path', type: 'string', description: 'File path' },
+            { name: 'dig', type: 'boolean', description: 'allow digging through subfolders'}
         ]
 
         DomainManager.registerCommand domainName, 'convertDirectory', cmdConvertDirectory, false, 'Convert whole directories', [
@@ -111,6 +128,7 @@ do () ->
         ]
 
         DomainManager.registerCommand domainName, 'convertFileEncoding', cmdConvertFileEncoding, false, 'Create a UTF8 formated file', []
+
         return
     
     exports.init = init

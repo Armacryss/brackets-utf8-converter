@@ -13,7 +13,7 @@ define(function(require, exports, module) {
     },
     "allowAutoConvert": {
       "type": "boolean",
-      "value": false
+      "value": true
     }
   };
   _.each(defaultPreferences, function(definition, key) {

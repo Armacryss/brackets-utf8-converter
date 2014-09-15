@@ -8,7 +8,7 @@ define (require, exports, module) ->
     
     defaultPreferences = {
         "allowDigging": { "type": "boolean", "value": true },
-        "allowAutoConvert": { "type" : "boolean", "value": false }
+        "allowAutoConvert": { "type" : "boolean", "value": true }
     }
 
     _.each(defaultPreferences, (definition, key) -> 

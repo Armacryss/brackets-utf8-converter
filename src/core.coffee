@@ -54,17 +54,21 @@ define (require, exports, module) ->
         ## Add commands
         CommandManager.register 'Detect Encoding', DETECT_ENCODING_COMMAND_ID, @handleDetectEncoding
         
-        ## Directory Convert enable only if auto convert is enabled
-        if Preferences.get 'allowAutoConvert'
-            CommandManager.register 'Convert to UTF8', CONVERT_ENCODING_COMMAND_ID, @handleConvertEncodingFromMenu        
+
             
         CommandManager.register 'Encoding Preferences', PREFERENCES_ENCODING_COMMAND_ID, preferencesDialog.show
         
         ## Add menu items
         menu = Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU)
         do menu.addMenuDivider
+        
         menu.addMenuItem DETECT_ENCODING_COMMAND_ID
-        menu.addMenuItem CONVERT_ENCODING_COMMAND_ID
+        
+        ## Directory Convert enable only if auto convert is enabled
+        if Preferences.get 'allowAutoConvert'
+            CommandManager.register 'Convert to UTF8', CONVERT_ENCODING_COMMAND_ID, @handleConvertEncodingFromMenu        
+            menu.addMenuItem CONVERT_ENCODING_COMMAND_ID
+            
         menu.addMenuItem PREFERENCES_ENCODING_COMMAND_ID
         
         return
@@ -81,12 +85,20 @@ define (require, exports, module) ->
             console.log '[UTF8-Converter] converted a file'
             @currentItem.html('Converted')
        
-    ## Detection process
+    ## Detection process for folders
     detectEncoding = () =>
         encodingPromise = @nodeConnection.domains.bracketsUtfConverter.getFilesEncoding(ProjectManager.getSelectedItem()._path.toString(), Preferences.get('allowDigging'))
         
         encodingPromise.fail (err) -> console.error '[UTF8-Converter] failed to detect encoding of files', err
         encodingPromise.done (data) -> utfUI.showPanel data.files
+        encodingPromise
+        
+    ## Detection process for single file
+    detectSingleFileEncoding = () =>
+        currentFile = ProjectManager.getSelectedItem()._path.toString()
+        encodingPromise = @nodeConnection.domains.bracketsUtfConverter.getFileEncoding currentFile
+        encodingPromise.fail (err) -> console.error '[UTF8-Converter] failed to detect encoding of file', err
+        encodingPromise.done (data) -> utfUI.showPanel data
         encodingPromise
         
     ## Convert directory from context menu
@@ -99,15 +111,22 @@ define (require, exports, module) ->
             console.log '[UTF8-Converter] converted a directory'
         convertPromise
             
+    ## Convert a single file selected from context menu
     convertSelectedFileFromMenu = () ->
-        null
+        currentFile = ProjectManager.getSelectedItem()._path.toString()
+        convertPromise = @nodeConnection.domains.bracketsUtfConverter.convertFileEncoding currentFile
+        convertPromise.fail (err) ->
+            console.log '[UTF8-Converter] failed to convert the file : ' + err
+        convertPromise.done () =>
+            console.log '[UTF8-Converter] converted a file.'
+        convertPromise
     
     ## Main handler
     handleDetectEncoding = () -> 
         if ProjectManager.getSelectedItem()._isDirectory
             chain detectEncoding 
         else
-            Dialogs.showModalDialog '', 'UTF8-Converter', 'You must select a <b>directory</b> to detect encodings.<br />This extension doesn\'t work with a single files.'
+            chain detectSingleFileEncoding
         return
     
     ## Handle directory conversion
