@@ -1,7 +1,7 @@
 {
     "name": "brackets-utf8-converter",
     "title": "Brackets Extension - UTF8 converter",
-    "description": "This project is an extension of Az-Encode <https://github.com/Azakur4/Az-Encode>, written by Jimmy Brian Anamaria Torres <captasfire@hotmail.com>. It provides a way to convert single files or whole directories (and subdirectories) to UTF-8.",
+    "description": "Allows you to convert single files or whole folders (and sufolders) to UTF8. This project is a fork of Az-Encode <https://github.com/Azakur4/Az-Encode>, written by Jimmy Brian Anamaria Torres <captasfire@hotmail.com>.",
     "homepage": "https://github.com/Armacryss/brackets-utf8-converter",
     "version": "0.1.0",
     "author": "Gabriel GASNOT <gabriel.gasnot@gmail.com>",
