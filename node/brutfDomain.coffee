@@ -50,6 +50,10 @@ do () ->
     ## Convert file to UTF8.
     cmdConvertFileEncoding = (filePath, fileDestination)  ->
         file = fs.readFileSync filePath
+        fileEncoding = jschardet.detect(file).encoding
+        if not fileEncoding?
+            return
+        
         str = iconv.decode file, jschardet.detect(file).encoding
         str_enc = iconv.encode str, 'utf8'
         

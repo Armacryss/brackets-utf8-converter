@@ -51,8 +51,12 @@
     };
   };
   cmdConvertFileEncoding = function(filePath, fileDestination) {
-    var file, fileDir, fileExt, fileName, newFile, str, str_enc;
+    var file, fileDir, fileEncoding, fileExt, fileName, newFile, str, str_enc;
     file = fs.readFileSync(filePath);
+    fileEncoding = jschardet.detect(file).encoding;
+    if (fileEncoding == null) {
+      return;
+    }
     str = iconv.decode(file, jschardet.detect(file).encoding);
     str_enc = iconv.encode(str, 'utf8');
     fileExt = path.extname(filePath);
