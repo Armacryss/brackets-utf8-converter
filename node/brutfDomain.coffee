@@ -25,10 +25,13 @@ do () ->
         lsFiles = fs.readdirSync(dirPath)
         listFiles = []
         
+        ## if directory doesn't end with slash, then we add one
+        dirPath += '/' if dirPath isnt /\/$/
+            
         ##Loop through the list of detected files
         for filename in lsFiles
             ## We ignore temp files (MAC & Linux)
-            if filename? and filename isnt '.DS_Store' and filename isnt /~$/
+            if filename? and filename isnt '.DS_Store' and filename isnt /~$/ and filename isnt '.svn'
                 ## Building the file path
                 filePath = dirPath + filename
                 ## if it's a file, we have to read it
@@ -37,7 +40,7 @@ do () ->
                     listFiles.push file
                 ## otherwise, if we allow it from the preferences, we look into the subfolders
                 else if dig
-                    ## just to be sure, we had a slash in the end
+                    ## just to be sure, we add a slash in the end
                     filePath += '/' if filePath isnt /\/$/
                     ## recursive call
                     lsDiggedFiles = cmdGetFilesEncoding filePath, dig
@@ -63,6 +66,7 @@ do () ->
         ## Build new file path
         if not fileDestination?
             fileDir = path.dirname filePath
+            fileDir += '/' if fileDir isnt /\/$/
             newFile = fileDir + fileName + '.utf8' + fileExt
         else
             newFile = fileDestination + fileName + fileExt
@@ -79,7 +83,7 @@ do () ->
         listFiles = []
         
         for filename in lsFiles
-            if filename? and filename isnt '.DS_Store' and filename isnt /~$/
+            if filename? and filename isnt '.DS_Store' and filename isnt /~$/ and filename isnt '.svn'
                 filePath = dirPath + filename
                 if not do fs.lstatSync(filePath).isDirectory
                     file = cmdGetFileEncoding filePath
