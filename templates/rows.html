@@ -1,0 +1,11 @@
+{{#fileList}}
+    {{#.}}
+        <tr class="file{{#visible}} expanded{{/visible}}{{^visible}} collapsed{{/visible}}">
+            <td>{{path}}</td>
+            <td>{{name}}</td>
+            <td style="text-align: center;">{{encoding}}</td>
+            <td style="text-align: center;">{{confidence}} %</td>
+            <td style="text-align: center;"><a class="btnConvert" href="#" data-file="{{path}}">Convert</a></td>
+        </tr>
+    {{/.}}
+{{/fileList}}
