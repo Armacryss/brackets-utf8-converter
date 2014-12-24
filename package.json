@@ -9,7 +9,7 @@
             "encoding"
         ],
     "homepage": "https://github.com/Armacryss/brackets-utf8-converter",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "author": "Gabriel GASNOT <gabriel.gasnot@gmail.com>",
     "license": "MIT",
     "engines": {
