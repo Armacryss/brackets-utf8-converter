@@ -13,6 +13,7 @@ define (require, exports, module) ->
     ## UI Module
     utfUI   =   require './ui' 
     preferencesDialog = require './preferencesdialog'
+    specificEncodingDialog = require './specificencodingdialog'
     Preferences = require './preferences'
     
     ## Variables
@@ -49,14 +50,13 @@ define (require, exports, module) ->
         DETECT_ENCODING_COMMAND_ID = 'brutf.detectEncoding'
         CONVERT_ENCODING_COMMAND_ID = 'brutf.goEncoding'
         PREFERENCES_ENCODING_COMMAND_ID = 'brutf.preferences'
+        CONVERT_FROM_ENCODING_COMMAND_ID = 'brutf.encodeFrom'
         
         
         ## Add commands
         CommandManager.register 'Detect Encoding', DETECT_ENCODING_COMMAND_ID, @handleDetectEncoding
-        
-
-            
         CommandManager.register 'Encoding Preferences', PREFERENCES_ENCODING_COMMAND_ID, preferencesDialog.show
+        CommandManager.register 'Convert to UTF8 with specified encoding', CONVERT_FROM_ENCODING_COMMAND_ID, @handleConvertFromEncodingMenu
         
         ## Add menu items
         menu = Menus.getContextMenu(Menus.ContextMenuIds.PROJECT_MENU)
@@ -70,6 +70,7 @@ define (require, exports, module) ->
             menu.addMenuItem CONVERT_ENCODING_COMMAND_ID
             
         menu.addMenuItem PREFERENCES_ENCODING_COMMAND_ID
+        menu.addMenuItem CONVERT_FROM_ENCODING_COMMAND_ID
         
         return
     
@@ -112,7 +113,7 @@ define (require, exports, module) ->
         convertPromise
             
     ## Convert a single file selected from context menu
-    convertSelectedFileFromMenu = () ->
+    convertSelectedFileFromMenu = () =>
         currentFile = ProjectManager.getSelectedItem()._path.toString()
         convertPromise = @nodeConnection.domains.bracketsUtfConverter.convertFileEncoding currentFile
         convertPromise.fail (err) ->
@@ -136,6 +137,15 @@ define (require, exports, module) ->
         else
             chain convertSelectedFileFromMenu
         return
+        
+    ## Handle conversion from specified encoding
+    handleConvertFromEncodingMenu = () =>
+      if !ProjectManager.getSelectedItem()._isDirectory
+            currentFile = ProjectManager.getSelectedItem()._path.toString()
+            chain specificEncodingDialog.show @nodeConnection, currentFile
+      else 
+            console.log '[UTF8-Converter] cannot convert directory with specific encoding (yet)'
+      return
     
     ## Exports
     exports.init = init
@@ -143,4 +153,5 @@ define (require, exports, module) ->
     exports.detectEncoding = detectEncoding
     exports.handleDetectEncoding = handleDetectEncoding
     exports.handleConvertEncodingFromMenu = handleConvertEncodingFromMenu
+    exports.handleConvertFromEncodingMenu = handleConvertFromEncodingMenu
     return

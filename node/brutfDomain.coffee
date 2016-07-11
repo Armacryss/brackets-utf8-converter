@@ -74,6 +74,29 @@ do () ->
         fs.writeFileSync(newFile, str_enc);
         
         return newFile;
+  
+    ## Convert file using specified encoding
+    cmdConvertFileFromEncoding = (filePath, fileOriginalEncoding) ->
+        if not iconv.encodingExists fileOriginalEncoding
+            console.log 'Iconv can\'t decode with that encoding : ' + fileOriginalEncoding
+            return
+            
+        file = fs.readFileSync filePath, {encoding: 'binary'}
+
+        str = iconv.decode file, fileOriginalEncoding        
+        str_enc = iconv.encode str, 'utf8'
+        
+        fileExt = path.extname filePath
+        fileName = path.basename filePath, fileExt
+            
+        ## Build new file path
+        fileDir = path.dirname filePath
+        fileDir += '/' if fileDir isnt /\/$/
+        newFile = fileDir + fileName + '.forced_utf8' + fileExt
+        
+        fs.writeFileSync(newFile, str_enc);
+        
+        return newFile;
     
     ## Convert directory to UTF8
     cmdConvertDirectory = (dirPath, dig, isDigging) ->
@@ -136,6 +159,11 @@ do () ->
         ]
 
         DomainManager.registerCommand domainName, 'convertFileEncoding', cmdConvertFileEncoding, false, 'Create a UTF8 formated file', []
+
+        DomainManager.registerCommand domainName, 'convertFileFromEncoding', cmdConvertFileFromEncoding, false, 'Create a UTF8 formated file from a specified encoding', [
+          { name: 'path', type: 'string', description: 'File path' },
+          { name: 'encoding', type: 'string', description: 'File encoding' }
+        ]
 
         return
     
